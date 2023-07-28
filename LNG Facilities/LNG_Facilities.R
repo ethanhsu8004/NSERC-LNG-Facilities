@@ -5,6 +5,8 @@ library(dplyr)
 library(sf)
 library(ggplot2)
 library(dplyr)
+library(leaflet)
+library(leaflet.extras)
 
 #Importing Data
 Flaring_Data <- readRDS("Data/LNG_Facilities.rds")
@@ -36,10 +38,12 @@ Corpus_Christi_coordinates <- st_as_sf(Corpus_Christi_coordinates, coords = c("l
 Corpus_Christi_coordinates_buffer_1km <- Corpus_Christi_coordinates  %>% st_transform(crs = 32613) %>% st_buffer(dist = 1000) %>% st_transform(crs = 4326)
 Flaring_Data_Corpus_1KM <- Flaring_Data_Corpus[lengths(st_within(Flaring_Data_Corpus, Corpus_Christi_coordinates_buffer_1km)) > 0, ]
 
+#MAPS
+Flaring_Map_Freeport <- leaflet(Flaring_Data_Freeport_1KM) %>% addTiles() %>%  addCircleMarkers(lng = ~lon, lat = ~lat, clusterOptions = markerClusterOptions(maxClusterRadius = 25), color = "red", radius = 4) 
+Flaring_Map_Freeport
 
-
-
-
+Flaring_Map_Corpous <- leaflet(Flaring_Data_Corpus_1KM) %>% addTiles() %>%  addCircleMarkers(lng = ~lon, lat = ~lat, clusterOptions = markerClusterOptions(maxClusterRadius = 25), color = "red", radius = 4) 
+Flaring_Map_Corpous
 
 
 
