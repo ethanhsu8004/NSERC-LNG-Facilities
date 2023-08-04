@@ -1,3 +1,10 @@
+---
+title: "Flaring Maps LNG Facilities"
+output: html_document
+date: "2023-08-03"
+---
+
+```{r setup, include=FALSE}
 #Task  VNF data around two LNG facilities Freeport (started operation in mid 2019, coordinates 28.9266713(lat),-95.3271224(long)) 
 #and Corpus Christi (started operation mid 2018, coordinates 27.890013(lat),-97.271692(long)).
 
@@ -39,11 +46,21 @@ Corpus_Christi_coordinates_buffer_1km <- Corpus_Christi_coordinates  %>% st_tran
 Flaring_Data_Corpus_1KM <- Flaring_Data_Corpus[lengths(st_within(Flaring_Data_Corpus, Corpus_Christi_coordinates_buffer_1km)) > 0, ]
 
 #MAPS
-Flaring_Map_Freeport <- leaflet(Flaring_Data_Freeport_1KM) %>% addTiles() %>%  addCircleMarkers(lng = ~lon, lat = ~lat, clusterOptions = markerClusterOptions(maxClusterRadius = 25), color = "red", radius = 4) 
-Flaring_Map_Freeport
+Flaring_Map_Freeport <- leaflet(Flaring_Data_Freeport_1KM) %>% addProviderTiles(providers$Esri.WorldImagery, options = tileOptions(maxZoom = 19))%>%  addCircleMarkers(lng = ~lon, lat = ~lat, clusterOptions = markerClusterOptions(maxClusterRadius = 25), color = "red", radius = 4) 
 
-Flaring_Map_Corpus <- leaflet(Flaring_Data_Corpus_1KM) %>% addProviderTiles(providers$Esri.WorldImagery) %>%addCircleMarkers(lng = ~lon, lat = ~lat, clusterOptions = markerClusterOptions(maxClusterRadius = 25), color = "red", radius = 4) 
+
+Flaring_Map_Corpus <- leaflet(Flaring_Data_Corpus_1KM) %>% addProviderTiles(providers$Esri.WorldImagery, options = tileOptions(maxZoom = 19)) %>%addCircleMarkers(lng = ~lon, lat = ~lat, clusterOptions = markerClusterOptions(maxClusterRadius = 25), color = "red", radius = 4) 
+
+```
+
+## FREEPORT FLARING MAP
+```{r, echo = FALSE}
+Flaring_Map_Freeport
+```
+
+## CORPUS FLARING MAP
+```{r, echo = FALSE}
 Flaring_Map_Corpus
 
-
+```
 
